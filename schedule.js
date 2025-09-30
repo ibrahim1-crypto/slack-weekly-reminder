@@ -15,22 +15,27 @@ const messageText =
   '---\n' +
   'Thank you!';
 
-function nextMondayAt0900Utc() {
-  // Schedules for 09:00 UTC; if 09:00 local time is needed, compute the offset to UTC or change hour here.
+// Compute next Monday 09:00 at GMT+2 (fixed offset +02:00)
+function nextMondayAt0900_GMTplus2_toUnix() {
   const now = new Date();
-  const day = now.getUTCDay(); // 0=Sun..6=Sat
+  const day = now.getUTCDay(); // 0=Sun..6=Sat, UTC-based
   const daysUntilMon = (1 - day + 7) % 7 || 7;
+
+  // Build a UTC date for the next Monday at 07:00 UTC, which equals 09:00 at GMT+2
+  // Note: GMT+2 is UTC+2, so 09:00 local = 07:00 UTC
+  const targetUtcHour = 7;
   const d = new Date(Date.UTC(
     now.getUTCFullYear(),
     now.getUTCMonth(),
     now.getUTCDate() + daysUntilMon,
-    9, 0, 0, 0  // 09:00 UTC
+    targetUtcHour, 0, 0, 0
   ));
   return Math.floor(d.getTime() / 1000);
 }
 
 (async () => {
-  const post_at = nextMondayAt0900Utc();
+  const post_at = nextMondayAt0900_GMTplus2_toUnix();
   const res = await web.chat.scheduleMessage({ channel: channelId, text: messageText, post_at });
   console.log('Scheduled:', res.scheduled_message_id);
 })();
+
