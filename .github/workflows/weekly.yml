@@ -15,4 +15,4 @@ jobs:
       - run: npm ci || npm i
       - env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        run: node schedule.js
+        run: node schedule.cjs
