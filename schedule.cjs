@@ -1,4 +1,4 @@
-import { WebClient } from '@slack/web-api';
+const { WebClient } = require('@slack/web-api');
 
 const web = new WebClient(process.env.SLACK_BOT_TOKEN);
 const channelId = 'C097RTHM23X';
